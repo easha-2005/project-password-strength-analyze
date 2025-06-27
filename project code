@@ -1,0 +1,47 @@
+Project code password strength analyze:-
+# password_analyzer.py
+
+from zxcvbn import zxcvbn
+from datetime import datetime
+
+def analyze_password(password):
+    result = zxcvbn(password)
+    print("\n--- Password Analysis ---")
+    print(f"Password: {password}")
+    print(f"Score (0-4): {result['score']}")
+    print(f"Estimated Crack Time: {result['crack_times_display']['offline_slow_hashing_1e4_per_second']}")
+    print(f"Feedback: {result['feedback']['warning']} {result['feedback']['suggestions']}")
+
+def generate_wordlist(name, dob, pet):
+    patterns = [name, dob, pet]
+    wordlist = []
+
+    for word in patterns:
+        wordlist.extend([
+            word,
+            word + "123",
+            word[::-1],
+            word + "2025",
+            word.replace("a", "@").replace("i", "1"),
+            word.upper(),
+            word.lower(),
+            word + "@123"
+        ])
+
+    with open("custom_wordlist.txt", "w") as f:
+        for word in wordlist:
+            f.write(word + "\n")
+
+    print("\n[+] Custom wordlist saved as 'custom_wordlist.txt'")
+
+# Example Run
+if __name__ == "__main__":
+    print("PASSWORD STRENGTH ANALYZER & WORDLIST GENERATOR")
+    pwd = input("Enter a password to analyze: ")
+    analyze_password(pwd)
+
+    print("\n--- Wordlist Generator ---")
+    name = input("Enter your name: ")
+    dob = input("Enter your date of birth (e.g., 15041999): ")
+    pet = input("Enter your pet's name: ")
+    generate_wordlist(name, dob, pet)
